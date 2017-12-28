@@ -1,8 +1,8 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var _ = require('lodash');
+const express = require('express');
+const bodyParser = require('body-parser');
+const _ = require('lodash');
 
-var mongoose = require('./database/connect');
+var connect = require('./database/connect');
 var Todo = require('./models/todo');
 var User = require('./models/user');
 var authenticate = require('./middleware/authenticate');

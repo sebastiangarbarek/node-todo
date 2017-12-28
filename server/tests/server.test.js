@@ -1,5 +1,5 @@
-var chai = require('chai');
-var chaiHttp = require('chai-http');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 
 var app = require('./../server');
 var Todo = require('./../models/todo');

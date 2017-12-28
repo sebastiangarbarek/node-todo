@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var validator = require('validator');
-var jwt = require('jsonwebtoken');
-var _ = require('lodash');
+const mongoose = require('mongoose');
+const validator = require('validator');
+const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 
 var userSchema = new mongoose.Schema({
   email: {

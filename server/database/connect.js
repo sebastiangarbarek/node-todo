@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 var env = process.env.NODE_ENV || 'dev';
 var dbHost = process.env.MONGODB_URI || 'mongodb://localhost:27017/';
