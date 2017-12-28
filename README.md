@@ -1,3 +1,3 @@
 # node-todo
 
-A perfect Node.js Todo example.
+A perfect Node.js todo example.

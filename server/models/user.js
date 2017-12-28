@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const bcrypt = require('bcryptjs');
 
 var userSchema = new mongoose.Schema({
   email: {
@@ -37,7 +38,9 @@ var userSchema = new mongoose.Schema({
 userSchema.methods.generateAuthToken = function () {
   var user = this;
   var access = 'auth';
+
   var token = jwt.sign({_id: user._id.toHexString(), access}, '123').toString();
+
   user.tokens.push({access, token});
   return user.save().then(() => {
     return token;
@@ -62,6 +65,24 @@ userSchema.statics.findByToken = function (token) {
   });
 };
 
+// Mongoose middleware called before the save function.
+userSchema.pre('save', function (next) {
+  var user = this;
+
+  // Check to prevent hashing the hash.
+  if (user.isModified('password')) {
+    bcrypt.genSalt((err, salt) => {
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        user.password = hash;
+        next();
+      });
+    });
+  } else {
+    next();
+  }
+});
+
+// Overridden method.
 userSchema.methods.toJSON = function () {
   var user = this;
   var userObject = user.toObject();
