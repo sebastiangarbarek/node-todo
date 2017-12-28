@@ -23,6 +23,14 @@ app.post('/api/todo', (req, res) => {
   });
 });
 
+app.get('/api/todo', (req, res) => {
+  Todo.find().then((todos) => {
+    res.send({todos});
+  }).catch((err) => {
+    res.status(400).send(err);
+  });
+});
+
 app.listen(port, () => {
   console.log('Todo is running on port ' + port);
 });

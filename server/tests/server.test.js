@@ -9,13 +9,7 @@ chai.use(chaiHttp);
 
 describe('POST /api/todo', () => {
   beforeEach((done) => {
-    var todo = new Todo({
-      task: 'Test this'
-    });
-    todo.save((err) => {
-      if (err) return done(err);
-      done();
-    });
+    Todo.remove({}).then(() => done());
   });
 
   it('should not add an empty todo', (done) => {
