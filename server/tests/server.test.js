@@ -23,6 +23,18 @@ describe('POST /api/todo', () => {
       .post('/api/todo')
       .send({})
       .end((err, res) => {
+        Todo.find().then((todos) => {
+          todos.should.be.empty;
+        }).catch((err) => done(err));
+        done();
+      });
+  });
+
+  it('should respond with an error to an empty todo', (done) => {
+    chai.request(app)
+      .post('/api/todo')
+      .send({})
+      .end((err, res) => {
         res.should.have.status(400);
         done();
       });
