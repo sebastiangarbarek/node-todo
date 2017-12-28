@@ -4,8 +4,11 @@
   "description": "A Node.js Todo API example.",
   "main": "server.js",
   "scripts": {
-    "server": "node server/server.js",
+    "start": "node server/server.js",
     "test": "mocha server/**/*.test.js"
+  },
+  "engines": {
+    "node": "9.2.0"
   },
   "author": "Sebastian Garbarek",
   "license": "ISC",

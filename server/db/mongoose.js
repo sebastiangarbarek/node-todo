@@ -1,7 +1,7 @@
 require('dotenv').config();
 var mongoose = require('mongoose');
 
-var dbHost = process.env.DB_HOST;
+var dbHost = process.env.MONGODB_URI || process.env.DB_HOST;
 if (process.env.NODE_ENV === 'test') var dbName = 'TestTodoApp'; else var dbName = 'TodoApp';
 
 var dbOptions = {
