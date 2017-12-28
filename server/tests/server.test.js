@@ -7,6 +7,33 @@ var Todo = require('./../models/todo');
 var should = chai.should();
 chai.use(chaiHttp);
 
+var todos = [{
+  task: 'Test GET'
+}, {
+  task: 'Test POST'
+}];
+
+describe('GET /api/todo', () => {
+  beforeEach((done) => {
+    Todo.remove({}).then(() => {
+      return Todo.insertMany(todos);
+    }).then(() => done());
+  });
+
+  it('should list all todos', (done) => {
+    chai.request(app)
+      .get('/api/todo')
+      .end((err, res) => {
+        res.body.todos.should.have.lengthOf(todos.length);
+        done();
+      });
+  });
+
+  afterEach((done) => {
+    Todo.remove({}).then(() => done());
+  });
+});
+
 describe('POST /api/todo', () => {
   beforeEach((done) => {
     Todo.remove({}).then(() => done());
