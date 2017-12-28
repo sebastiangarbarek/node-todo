@@ -1,5 +1,3 @@
-require('dotenv').config({path: 'server/config/conf.env'});
-
 var express = require('express');
 var bodyParser = require('body-parser');
 

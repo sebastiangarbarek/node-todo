@@ -7,15 +7,14 @@ var Todo = require('./../models/todo');
 var should = chai.should();
 chai.use(chaiHttp);
 
-var todos = [{
-  task: 'Test GET'
-}, {
-  task: 'Test POST'
-}];
-
 describe('GET /api/todo', () => {
   beforeEach((done) => {
     Todo.remove({}).then(() => {
+      var todos = [{
+        task: 'Test GET'
+      }, {
+        task: 'Test POST'
+      }];
       return Todo.insertMany(todos);
     }).then(() => done());
   });
