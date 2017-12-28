@@ -1,7 +1,7 @@
 {
   "name": "Todo",
   "version": "1.0.0",
-  "description": "A Node.js Todo API example.",
+  "description": "A perfect Node.js Todo example.",
   "main": "server.js",
   "repository": {
     "type": "git",

@@ -32,7 +32,7 @@ app.get('/todo', (req, res) => {
   });
 });
 
-app.post('/register', (req, res) => {
+app.post('/join', (req, res) => {
   var body = _.pick(req.body, ['email', 'password']);
   var user = new User(body);
 
