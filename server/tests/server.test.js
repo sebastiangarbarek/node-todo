@@ -20,7 +20,7 @@ describe('GET /api/todo', () => {
     }).then(() => done());
   });
 
-  it('should list all todos', (done) => {
+  it('should retrieve all todos', (done) => {
     chai.request(app)
       .get('/api/todo')
       .end((err, res) => {

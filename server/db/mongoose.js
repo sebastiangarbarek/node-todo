@@ -1,12 +1,13 @@
 require('dotenv').config();
 var mongoose = require('mongoose');
 
-var dbHost = process.env.MONGODB_URI || process.env.DB_HOST;
+var dbHost = process.env.MONGODB_URI || 'mongodb://localhost:27017/';
 if (process.env.NODE_ENV === 'test') {
   var dbName = 'TestTodoApp'
 } else if (process.env.NODE_ENV === 'dev') {
   var dbName = 'TodoApp';
 } else {
+  // Configured by production server.
   var dbName = '';
 }
 
