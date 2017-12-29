@@ -48,13 +48,12 @@ userSchema.methods.generateAuthToken = function () {
 };
 
 userSchema.statics.findByToken = function (token) {
-  var User = this;
   var decoded;
 
   try {
     decoded = jwt.verify(token, 'secret');
   } catch (err) {
-    // Cancels the parents' then clause.
+    // Forces a catch in the caller.
     return Promise.reject();
   }
 
@@ -62,6 +61,21 @@ userSchema.statics.findByToken = function (token) {
     _id: decoded._id,
     'tokens.token': token,
     'tokens.access': 'auth'
+  });
+};
+
+userSchema.statics.findByCredentials = function (email, password) {
+  return User.findOne({email}).then((user) => {
+    if (!user) {
+      // Forces a catch in the caller.
+      return Promise.reject();
+    }
+
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, user.password, (err, res) => {
+        if (res) resolve(user); else reject();
+      });
+    });
   });
 };
 
