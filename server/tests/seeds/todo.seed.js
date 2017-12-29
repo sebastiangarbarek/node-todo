@@ -1,8 +1,8 @@
-const ObjectID = require('mongodb');
+const ObjectID = require('mongodb').ObjectID;
 
 var Todo = require('./../../models/todo');
 
-const todos = [{
+const seedTodos = [{
   _id: new ObjectID(),
   task: 'Test GET'
 }, {
@@ -12,8 +12,8 @@ const todos = [{
 
 const populateTodos = (done) => {
   Todo.remove({}).then(() => {
-    return Todo.insertMany(todos);
+    return Todo.insertMany(seedTodos);
   }).then(() => done());
 }
 
-module.exports = {todos, populateTodos};
+module.exports = {seedTodos, populateTodos};
