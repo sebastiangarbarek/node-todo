@@ -19,9 +19,7 @@ switch (env) {
 }
 
 mongoose.Promise = global.Promise;
-mongoose.connect(dbHost + dbName, dbOptions).then(() => {
-  console.log('Connected to database on ' + dbHost + dbName);
-}, err => {
+mongoose.connect(dbHost + dbName, dbOptions).catch((err) => {
   console.log('Failed to connect to database on ' + dbHost + dbName);
 });
 
