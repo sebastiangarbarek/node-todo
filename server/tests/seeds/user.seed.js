@@ -3,21 +3,16 @@ const jwt = require('jsonwebtoken');
 
 var User = require('./../../models/user');
 
-const user1Id = new ObjectID();
-const user2Id = new ObjectID();
+const sebastian = new ObjectID();
 
 const seedUsers = [{
-  _id: user1Id,
-  email: '1@test.com',
+  _id: sebastian,
+  email: 'sebastian@test.com',
   password: 'password',
   tokens: [{
     access: 'auth',
-    token: jwt.sign({_id: user1Id, access: 'auth'}, 'secret').toString()
+    token: jwt.sign({_id: sebastian, access: 'auth'}, 'secret').toString()
   }]
-}, {
-  _id: user2Id,
-  email: '2@test.com',
-  password: 'password'
 }];
 
 const populateUsers = (done) => {
