@@ -1,20 +1,22 @@
 const mongoose = require('mongoose');
 
 var env = process.env.NODE_ENV || 'dev';
+
 var dbHost = process.env.MONGODB_URI || 'mongodb://localhost:27017/';
+var dbOptions = {useMongoClient: true};
+var dbName;
 
-if (env === 'test') {
-  var dbName = 'TestTodoApp'
-} else if (env === 'dev') {
-  var dbName = 'TodoApp';
-} else {
-  // Configured by the production server.
-  var dbName = '';
+switch (env) {
+  case 'test':
+    dbName = 'TestTodoApp'
+    break;
+  case 'dev':
+    dbName = 'TodoApp';
+    break;
+  default:
+    // Configured by the production server.
+    dbName = '';
 }
-
-var dbOptions = {
-  useMongoClient: true
-};
 
 mongoose.Promise = global.Promise;
 mongoose.connect(dbHost + dbName, dbOptions).then(() => {
