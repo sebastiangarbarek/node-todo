@@ -59,10 +59,10 @@ describe('todo', () => {
 describe('user', () => {
   beforeEach(populateUsers);
 
-  describe('GET /user/me', () => {
+  describe('GET /home', () => {
     it('should respond with the user if authenticated', (done) => {
       chai.request(app)
-        .get('/user/me')
+        .get('/home')
         .set('x-auth', seedUsers[0].tokens[0].token)
         .end((err, res) => {
           res.should.have.status(200);
@@ -75,7 +75,7 @@ describe('user', () => {
 
     it('should respond with an error if unauthenticated', (done) => {
       chai.request(app)
-        .get('/user/me')
+        .get('/home')
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.deep.equal({});

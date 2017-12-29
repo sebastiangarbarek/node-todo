@@ -57,7 +57,7 @@ app.post('/join', (req, res) => {
   });
 });
 
-app.get('/user/me', authenticate, (req, res) => {
+app.get('/home', authenticate, (req, res) => {
   res.send(req.user);
 });
 
