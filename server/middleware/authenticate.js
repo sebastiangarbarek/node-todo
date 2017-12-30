@@ -12,7 +12,7 @@ var authenticate = (req, res, next) => {
     req.user = user;
     req.token = token;
 
-    // Call the corresponding route.
+    // Continue the route.
     next();
   }).catch((err) => {
     res.status(401).send();

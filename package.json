@@ -8,8 +8,8 @@
     "url": "https://github.com/sebastiangarbarek/node-todo"
   },
   "scripts": {
-    "start": "export NODE_ENV=prod && node server/server.js",
-    "local": "export NODE_ENV=dev && node server/server.js",
+    "start": "export NODE_ENV=prod && node server/bin/www.js",
+    "local": "export NODE_ENV=dev && node server/bin/www.js",
     "test": "export NODE_ENV=test && mocha server/**/*.test.js"
   },
   "engines": {
