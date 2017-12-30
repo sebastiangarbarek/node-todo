@@ -13,7 +13,7 @@ const seedUsers = [{
   password: 'password',
   tokens: [{
     access: 'auth',
-    token: jwt.sign({_id: sebastian, access: 'auth'}, 'secret').toString()
+    token: jwt.sign({_id: sebastian, access: 'auth'}, process.env.JWT_SECRET).toString()
   }]
 }, {
   _id: andrew,
