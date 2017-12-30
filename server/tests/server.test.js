@@ -17,11 +17,12 @@ describe('todo', () => {
   beforeEach(populate);
 
   describe('GET /todo', () => {
-    it('should respond with all todos in the database', (done) => {
+    it('should respond with a user\'s todos in the database', (done) => {
       chai.request(app)
         .get('/todo')
+        .set('x-auth', seedUsers[0].tokens[0].token)
         .end((err, res) => {
-          res.body.todos.should.have.lengthOf(seedTodos.length);
+          res.body.todos.should.have.lengthOf(1);
 
           done();
         });
@@ -29,9 +30,31 @@ describe('todo', () => {
   });
 
   describe('POST /todo', () => {
+    it('should create a new todo', (done) => {
+      var task = 'Test this'
+
+      chai.request(app)
+        .post('/todo')
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .send({task})
+        .end((err, res) => {
+          if (err) return done(err);
+
+          res.should.have.status(200);
+          res.body.task.should.equal(task);
+
+          Todo.find({task}).then((todos) => {
+            todos.should.have.lengthOf(1);
+            todos[0].task.should.equal(task);
+            done();
+          }).catch((err) => done(err));
+        });
+    });
+
     it('should not add an empty todo to the database', (done) => {
       chai.request(app)
         .post('/todo')
+        .set('x-auth', seedUsers[0].tokens[0].token)
         .send({})
         .end((err, res) => {
           Todo.find().then((databaseTodos) => {
@@ -45,6 +68,7 @@ describe('todo', () => {
     it('should respond with an error to an empty todo', (done) => {
       chai.request(app)
         .post('/todo')
+        .set('x-auth', seedUsers[0].tokens[0].token)
         .send({})
         .end((err, res) => {
           res.should.have.status(400);
