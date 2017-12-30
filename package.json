@@ -1,7 +1,7 @@
 {
   "name": "Todo",
   "version": "1.0.0",
-  "description": "A perfect Node.js todo example.",
+  "description": "A Node.js/Express todo example.",
   "main": "server.js",
   "repository": {
     "type": "git",

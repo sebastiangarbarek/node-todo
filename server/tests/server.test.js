@@ -188,6 +188,25 @@ describe('user', () => {
     });
   });
 
+  describe('DELETE /logout', () => {
+    it('should remove user auth token on user logout', (done) => {
+      chai.request(app)
+        .delete('/logout')
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .end((err, res) => {
+          if (err) return done(err);
+
+          res.should.have.status(200);
+
+          User.findById(seedUsers[0]._id).then((user) => {
+            user.tokens.should.have.lengthOf(0);
+
+            done();
+          }).catch((err) => done(err));
+        });
+    });
+  });
+
   afterEach((done) => {
     User.remove({}).then(() => done());
   });
