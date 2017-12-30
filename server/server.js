@@ -32,6 +32,14 @@ app.get('/todo', (req, res) => {
   });
 });
 
+app.delete('/logout', authenticate, (req, res) => {
+  req.user.removeAuthToken(req.token).then(() => {
+    res.status(200).send();
+  }).catch((err) => {
+    res.status(400).send();
+  });
+});
+
 app.post('/login', (req, res) => {
   var body = _.pick(req.body, ['email', 'password']);
 
