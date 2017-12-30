@@ -2,6 +2,7 @@ const ObjectID = require('mongodb').ObjectID;
 const jwt = require('jsonwebtoken');
 
 var User = require('./../../models/user');
+var Todo = require('./../../models/todo');
 
 const sebastian = new ObjectID();
 const andrew = new ObjectID();
@@ -33,4 +34,26 @@ const populateUsers = (done) => {
   }).then(() => done());
 };
 
-module.exports = {seedUsers, populateUsers};
+const seedTodos = [{
+  _id: new ObjectID(),
+  task: 'Test GET',
+  _creator: sebastian
+}, {
+  _id: new ObjectID(),
+  task: 'Test POST',
+  _creator: andrew
+}];
+
+const populateTodos = (done) => {
+  Todo.remove({}).then(() => {
+    return Todo.insertMany(seedTodos);
+  }).then(() => done());
+};
+
+const populate = (done) => {
+  populateUsers(() => {
+    populateTodos(() => done());
+  });
+};
+
+module.exports = {seedUsers, seedTodos, populate};

@@ -4,14 +4,17 @@ const chaiHttp = require('chai-http');
 var app = require('./../server');
 var Todo = require('./../models/todo');
 var User = require('./../models/user');
-var {seedTodos, populateTodos} = require('./seeds/todo.seed.js');
-var {seedUsers, populateUsers} = require('./seeds/user.seed.js');
+var {
+  seedUsers,
+  seedTodos,
+  populate
+} = require('./seeds/user+todo');
 
 var should = chai.should();
 chai.use(chaiHttp);
 
 describe('todo', () => {
-  beforeEach(populateTodos);
+  beforeEach(populate);
 
   describe('GET /todo', () => {
     it('should respond with all todos in the database', (done) => {
@@ -57,7 +60,7 @@ describe('todo', () => {
 });
 
 describe('user', () => {
-  beforeEach(populateUsers);
+  beforeEach(populate);
 
   describe('GET /home', () => {
     it('should respond with the user if authenticated', (done) => {
