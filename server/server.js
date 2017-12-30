@@ -12,9 +12,10 @@ var port = process.env.PORT || 3000;
 var app = express();
 app.use(bodyParser.json());
 
-app.post('/todo', (req, res) => {
+app.post('/todo', authenticate, (req, res) => {
   var todo = new Todo({
-    task: req.body.task
+    task: req.body.task,
+    _creator: req.user._id
   });
 
   todo.save().then((doc) => {
@@ -24,8 +25,10 @@ app.post('/todo', (req, res) => {
   });
 });
 
-app.get('/todo', (req, res) => {
-  Todo.find().then((todos) => {
+app.get('/todo', authenticate, (req, res) => {
+  Todo.find({
+    _creator: req.user._id
+  }).then((todos) => {
     res.send({todos});
   }).catch((err) => {
     res.status(400).send(err);
