@@ -1,95 +1,25 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-var app = require('./../server');
-var Todo = require('./../models/todo');
-var User = require('./../models/user');
+var app = require('../../../app');
+var Todo = require('../../../models/todo');
+var User = require('../../../models/user');
 var {
   seedUsers,
   seedTodos,
   populate
-} = require('./seeds/user+todo');
+} = require('../seeds/user+todo');
 
 var should = chai.should();
 chai.use(chaiHttp);
 
-describe('todo', () => {
-  beforeEach(populate);
-
-  describe('GET /todo', () => {
-    it('should respond with a user\'s todos in the database', (done) => {
-      chai.request(app)
-        .get('/todo')
-        .set('x-auth', seedUsers[0].tokens[0].token)
-        .end((err, res) => {
-          res.body.todos.should.have.lengthOf(1);
-
-          done();
-        });
-    });
-  });
-
-  describe('POST /todo', () => {
-    it('should create a new todo', (done) => {
-      var task = 'Test this'
-
-      chai.request(app)
-        .post('/todo')
-        .set('x-auth', seedUsers[0].tokens[0].token)
-        .send({task})
-        .end((err, res) => {
-          if (err) return done(err);
-
-          res.should.have.status(200);
-          res.body.task.should.equal(task);
-
-          Todo.find({task}).then((todos) => {
-            todos.should.have.lengthOf(1);
-            todos[0].task.should.equal(task);
-            done();
-          }).catch((err) => done(err));
-        });
-    });
-
-    it('should not add an empty todo to the database', (done) => {
-      chai.request(app)
-        .post('/todo')
-        .set('x-auth', seedUsers[0].tokens[0].token)
-        .send({})
-        .end((err, res) => {
-          Todo.find().then((databaseTodos) => {
-            databaseTodos.should.have.lengthOf(seedTodos.length);
-          }).catch((err) => done(err));
-
-          done();
-        });
-    });
-
-    it('should respond with an error to an empty todo', (done) => {
-      chai.request(app)
-        .post('/todo')
-        .set('x-auth', seedUsers[0].tokens[0].token)
-        .send({})
-        .end((err, res) => {
-          res.should.have.status(400);
-
-          done();
-        });
-    });
-  });
-
-  afterEach((done) => {
-    Todo.remove({}).then(() => done());
-  });
-});
-
 describe('user', () => {
   beforeEach(populate);
 
-  describe('GET /home', () => {
+  describe('GET /', () => {
     it('should respond with the user if authenticated', (done) => {
       chai.request(app)
-        .get('/home')
+        .get('/')
         .set('x-auth', seedUsers[0].tokens[0].token)
         .end((err, res) => {
           res.should.have.status(200);
@@ -102,7 +32,7 @@ describe('user', () => {
 
     it('should respond with an error if unauthenticated', (done) => {
       chai.request(app)
-        .get('/home')
+        .get('/')
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.deep.equal({});

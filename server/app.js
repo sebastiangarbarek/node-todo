@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 
 var connect = require('./database/connect');
 var index = require('./routes/index');
-var doer = require('./routes/doer');
 var todos = require('./routes/todos');
 
 var app = express();

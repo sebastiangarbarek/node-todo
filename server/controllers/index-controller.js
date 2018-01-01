@@ -25,6 +25,9 @@ exports.postLogin = (req, res) => {
   User.findByCredentials(body.email, body.password).then((user) => {
     return user.generateAuthToken().then((token) => {
       res.header('x-auth', token).send(user);
+
+      // TODO: Send user todos.
+      
     });
   }).catch((err) => {
     res.status(400).send();

@@ -1,8 +1,8 @@
 const ObjectID = require('mongodb').ObjectID;
 const jwt = require('jsonwebtoken');
 
-var User = require('./../../models/user');
-var Todo = require('./../../models/todo');
+var Todo = require('../../../models/todo');
+var User = require('../../../models/user');
 
 const sebastian = new ObjectID();
 const andrew = new ObjectID();
