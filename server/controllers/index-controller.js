@@ -15,7 +15,14 @@ exports.postJoin = (req, res) => {
   }).then((token) => {
     res.header('x-auth', token).send(user);
   }).catch((err) => {
-    res.status(400).send(err);
+    if (err.code === 11000) {
+      res.setHeader('Content-Type', 'application/json');
+      res.status(400).send(JSON.stringify({
+        error: 'Email already registered'
+      }));
+    } else {
+      res.status(400).send();
+    }
   });
 };
 
@@ -27,7 +34,7 @@ exports.postLogin = (req, res) => {
       res.header('x-auth', token).send(user);
 
       // TODO: Send user todos.
-      
+
     });
   }).catch((err) => {
     res.status(400).send();
