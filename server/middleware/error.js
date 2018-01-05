@@ -39,5 +39,5 @@ exports.mongooseErrorHandler = (err, req, res, next) => {
 }
 
 exports.errorHandler = (err, req, res, next) => {
-  res.status(500).send(errorMessages);
+  res.status(500).send(err);
 }
