@@ -6,7 +6,6 @@ var formattedError = (code, msg) => {
 }
 
 exports.mongoErrorHandler = (err, req, res, next) => {
-  console.log(err);
   if (err.name == 'MongoError') {
     switch (err.code) {
       case 11000: {

@@ -3,6 +3,8 @@ const _ = require('lodash');
 var User = require('../models/user');
 
 exports.getHome = (req, res) => {
+  // TODO: Send user todos.
+
   res.send(req.user);
 };
 
@@ -27,7 +29,6 @@ exports.postLogin = (req, res) => {
       res.header('x-auth', token).send(user);
 
       // TODO: Send user todos.
-
     });
   }).catch((err) => {
     res.status(400).send();

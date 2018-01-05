@@ -9,6 +9,7 @@ var {
   seedTodos,
   populate
 } = require('../seeds/user+todo');
+var shared = require('../common/shared');
 
 var should = chai.should();
 chai.use(chaiHttp);
@@ -30,20 +31,11 @@ describe('user', () => {
         });
     });
 
-    it('should respond with an error if unauthenticated', (done) => {
-      chai.request(app)
-        .get('/')
-        .end((err, res) => {
-          res.should.have.status(401);
-          res.body.should.deep.equal({});
-
-          done();
-        });
-    });
+    shared.unauthorized('/', 'get');
   });
 
   describe('POST /join', () => {
-    it('should add a new user', (done) => {
+    it('should add a new user and their password should be hashed', (done) => {
       var req = {
         email: 'test@test.com',
         password: 'password'
@@ -71,7 +63,7 @@ describe('user', () => {
         });
     });
 
-    it('should return a validation error if the join request was invalid', (done) => {
+    it('should respond with the correct error if the email is invalid', (done) => {
       chai.request(app)
         .post('/join')
         .send({
@@ -80,12 +72,53 @@ describe('user', () => {
         })
         .end((err, res) => {
           res.should.have.status(400);
+          res.body.errors[0].errorMessage.should.equal('invalid is not a valid email');
 
           done();
         });
     });
 
-    it('should not add a user if the email has already been validated', (done) => {
+    it('should respond with the correct error if the email is missing', (done) => {
+      chai.request(app)
+        .post('/join')
+        .send({
+          password: 'password'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.errors[0].errorMessage.should.equal('An email is required');
+
+          done();
+        });
+    });
+
+    it('should respond with the correct error if the password is missing', (done) => {
+      chai.request(app)
+        .post('/join')
+        .send({
+          email: seedUsers[1].email
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.errors[0].errorMessage.should.equal('A password is required');
+
+          done();
+        });
+    });
+
+    it('should respond with two error messages if two fields are missing', (done) => {
+      chai.request(app)
+        .post('/join')
+        .send({})
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.errors.should.have.lengthOf(2);
+
+          done();
+        });
+    });
+
+    it('should not add a user if the email has already been verified', (done) => {
       chai.request(app)
         .post('/join')
         .send({
@@ -94,6 +127,7 @@ describe('user', () => {
         })
         .end((err, res) => {
           res.should.have.status(400);
+          res.body.errorMessage.should.equal('Duplicate key');
 
           done();
         });
@@ -162,6 +196,8 @@ describe('user', () => {
           }).catch((err) => done(err));
         });
     });
+
+    shared.unauthorized('/logout', 'delete');
   });
 
   afterEach((done) => {

@@ -9,6 +9,7 @@ var {
   seedTodos,
   populate
 } = require('../seeds/user+todo');
+var shared = require('../common/shared');
 
 var should = chai.should();
 chai.use(chaiHttp);
@@ -27,6 +28,8 @@ describe('todo', () => {
           done();
         });
     });
+
+    shared.unauthorized('/todos', 'get');
   });
 
   describe('POST /todos/write', () => {
@@ -76,6 +79,8 @@ describe('todo', () => {
           done();
         });
     });
+
+    shared.unauthorized('/todos/write', 'post');
   });
 
   afterEach((done) => {
