@@ -6,7 +6,7 @@ exports.getHome = (req, res) => {
   res.send(req.user);
 };
 
-exports.postJoin = (req, res) => {
+exports.postJoin = (req, res, next) => {
   var body = _.pick(req.body, ['email', 'password']);
   var user = new User(body);
 
@@ -15,14 +15,7 @@ exports.postJoin = (req, res) => {
   }).then((token) => {
     res.header('x-auth', token).send(user);
   }).catch((err) => {
-    if (err.code === 11000) {
-      res.setHeader('Content-Type', 'application/json');
-      res.status(400).send(JSON.stringify({
-        error: 'Email already registered'
-      }));
-    } else {
-      res.status(400).send();
-    }
+    next(err);
   });
 };
 

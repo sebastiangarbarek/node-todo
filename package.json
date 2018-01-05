@@ -2,7 +2,7 @@
   "name": "Todo",
   "version": "1.0.0",
   "description": "A Node.js/Express todo example.",
-  "main": "server.js",
+  "main": "app.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/sebastiangarbarek/node-todo"
@@ -10,6 +10,7 @@
   "scripts": {
     "start": "export NODE_ENV=prod && node server/bin/www.js",
     "local": "export NODE_ENV=dev && node server/bin/www.js",
+    "watch": "export NODE_ENV=dev && nodemon server/bin/www.js",
     "test": "export NODE_ENV=test && mocha server/**/*.test.js"
   },
   "engines": {
