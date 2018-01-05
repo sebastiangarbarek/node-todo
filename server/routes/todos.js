@@ -5,8 +5,10 @@ var todoController = require('../controllers/todo-controller');
 
 var router = express.Router();
 
-router.get('/', authenticate, todoController.getTodos);
-router.post('/write', authenticate, todoController.postWriteTodo);
+router.route('/')
+  .all(authenticate)
+  .get(todoController.getTodos)
+  .post(todoController.postTodo);
 router.route('/:id')
   .all(authenticate)
   .get(todoController.getTodo)
