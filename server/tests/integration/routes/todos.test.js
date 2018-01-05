@@ -1,7 +1,8 @@
+const http = require('http');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-var app = require('../../../app');
+var {app, connect} = require('../../../app');
 var Todo = require('../../../models/todo');
 var User = require('../../../models/user');
 var {
@@ -14,12 +15,14 @@ var shared = require('../common/shared');
 var should = chai.should();
 chai.use(chaiHttp);
 
+var server = http.createServer(app);
+
 describe('todo', () => {
   beforeEach(populate);
 
   describe('GET /todos', () => {
     it('should respond with a user\'s todos in the database', (done) => {
-      chai.request(app)
+      chai.request(server)
         .get('/todos')
         .set('x-auth', seedUsers[0].tokens[0].token)
         .end((err, res) => {
@@ -29,15 +32,15 @@ describe('todo', () => {
         });
     });
 
-    shared.unauthorized('/todos', 'get');
+    shared.unauthorized(server, '/todos', 'get');
   });
 
-  describe('POST /todos/write', () => {
+  describe('POST /todos', () => {
     it('should create a new todo', (done) => {
       var task = 'Test this'
 
-      chai.request(app)
-        .post('/todos/write')
+      chai.request(server)
+        .post('/todos')
         .set('x-auth', seedUsers[0].tokens[0].token)
         .send({task})
         .end((err, res) => {
@@ -55,7 +58,7 @@ describe('todo', () => {
     });
 
     it('should not add an empty todo to the database', (done) => {
-      chai.request(app)
+      chai.request(server)
         .post('/todos/write')
         .set('x-auth', seedUsers[0].tokens[0].token)
         .send({})
@@ -69,8 +72,8 @@ describe('todo', () => {
     });
 
     it('should respond with an empty todo error', (done) => {
-      chai.request(app)
-        .post('/todos/write')
+      chai.request(server)
+        .post('/todos')
         .set('x-auth', seedUsers[0].tokens[0].token)
         .send({})
         .end((err, res) => {
@@ -80,10 +83,18 @@ describe('todo', () => {
         });
     });
 
-    shared.unauthorized('/todos/write', 'post');
+    shared.unauthorized(server, '/todos', 'post');
   });
 
   afterEach((done) => {
     Todo.remove({}).then(() => done());
+  });
+});
+
+after(done => {
+  server.close(() => {
+    connect.models = {};
+    connect.modelSchemas = {};
+    connect.connection.close(done);
   });
 });

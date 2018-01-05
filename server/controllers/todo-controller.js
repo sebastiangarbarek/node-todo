@@ -15,7 +15,7 @@ exports.getTodo = (req, res) => {
 
 };
 
-exports.postWriteTodo = (req, res) => {
+exports.postTodo = (req, res) => {
   var todo = new Todo({
     task: req.body.task,
     _creator: req.user._id

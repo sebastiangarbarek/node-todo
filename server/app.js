@@ -19,4 +19,4 @@ app.use(error.mongoErrorHandler);
 app.use(error.mongooseErrorHandler);
 app.use(error.errorHandler);
 
-module.exports = app;
+module.exports = {app, connect};

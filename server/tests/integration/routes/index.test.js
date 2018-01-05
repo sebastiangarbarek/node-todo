@@ -1,7 +1,8 @@
+const http = require('http');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-var app = require('../../../app');
+var {app, connect} = require('../../../app');
 var Todo = require('../../../models/todo');
 var User = require('../../../models/user');
 var {
@@ -14,12 +15,14 @@ var shared = require('../common/shared');
 var should = chai.should();
 chai.use(chaiHttp);
 
+var server = http.createServer(app);
+
 describe('user', () => {
   beforeEach(populate);
 
   describe('GET /', () => {
     it('should respond with the user if authenticated', (done) => {
-      chai.request(app)
+      chai.request(server)
         .get('/')
         .set('x-auth', seedUsers[0].tokens[0].token)
         .end((err, res) => {
@@ -31,7 +34,7 @@ describe('user', () => {
         });
     });
 
-    shared.unauthorized('/', 'get');
+    shared.unauthorized(server, '/', 'get');
   });
 
   describe('POST /join', () => {
@@ -41,7 +44,7 @@ describe('user', () => {
         password: 'password'
       };
 
-      chai.request(app)
+      chai.request(server)
         .post('/join')
         .send(req)
         .end((err, res) => {
@@ -64,7 +67,7 @@ describe('user', () => {
     });
 
     it('should respond with the correct error if the email is invalid', (done) => {
-      chai.request(app)
+      chai.request(server)
         .post('/join')
         .send({
           email: 'invalid',
@@ -79,7 +82,7 @@ describe('user', () => {
     });
 
     it('should respond with the correct error if the email is missing', (done) => {
-      chai.request(app)
+      chai.request(server)
         .post('/join')
         .send({
           password: 'password'
@@ -93,7 +96,7 @@ describe('user', () => {
     });
 
     it('should respond with the correct error if the password is missing', (done) => {
-      chai.request(app)
+      chai.request(server)
         .post('/join')
         .send({
           email: seedUsers[1].email
@@ -107,7 +110,7 @@ describe('user', () => {
     });
 
     it('should respond with two error messages if two fields are missing', (done) => {
-      chai.request(app)
+      chai.request(server)
         .post('/join')
         .send({})
         .end((err, res) => {
@@ -119,7 +122,7 @@ describe('user', () => {
     });
 
     it('should not add a user if the email has already been verified', (done) => {
-      chai.request(app)
+      chai.request(server)
         .post('/join')
         .send({
           email: seedUsers[0].email,
@@ -136,7 +139,7 @@ describe('user', () => {
 
   describe('POST /login', () => {
     it('should login and return an auth token', (done) => {
-      chai.request(app)
+      chai.request(server)
         .post('/login')
         .send({
           email: seedUsers[1].email,
@@ -160,7 +163,7 @@ describe('user', () => {
     });
 
     it('should reject an invalid login attempt', (done) => {
-      chai.request(app)
+      chai.request(server)
         .post('/login')
         .send({
           email: seedUsers[1].email,
@@ -181,7 +184,7 @@ describe('user', () => {
 
   describe('DELETE /logout', () => {
     it('should remove user auth token on user logout', (done) => {
-      chai.request(app)
+      chai.request(server)
         .delete('/logout')
         .set('x-auth', seedUsers[0].tokens[0].token)
         .end((err, res) => {
@@ -197,10 +200,18 @@ describe('user', () => {
         });
     });
 
-    shared.unauthorized('/logout', 'delete');
+    shared.unauthorized(server, '/logout', 'delete');
   });
 
   afterEach((done) => {
     User.remove({}).then(() => done());
+  });
+});
+
+after(done => {
+  server.close(() => {
+    connect.models = {};
+    connect.modelSchemas = {};
+    connect.connection.close(done);
   });
 });
