@@ -88,6 +88,22 @@ describe('todo', () => {
     shared.unauthorized(server, '/todos', 'post');
   });
 
+  describe('GET /todos/:id', () => {
+    it('should respond with the todo of id', (done) => {
+      chai.request(server)
+        .get(`/todos/${seedTodos[0]._id.toHexString()}`)
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.todo.task.should.equal(seedTodos[0].task);
+
+          done();
+        });
+    });
+
+    shared.unauthorized(server, `/todos/${seedTodos[0]._id.toHexString()}`, 'get');
+  });
+
   afterEach((done) => {
     Todo.remove({}).then(() => done());
   });
