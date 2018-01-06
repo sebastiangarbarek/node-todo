@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 var User = require('../models/user');
 
-exports.getHome = (req, res) => {
+exports.getIndex = (req, res) => {
   // TODO: Send user todos.
 
   res.send(req.user);
