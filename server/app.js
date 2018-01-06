@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 var connect = require('./database/connect');
 var index = require('./routes/index');
 var todos = require('./routes/todos');
-var error = require('./middleware/error');
+var handler = require('./middleware/handler');
 
 var app = express();
 
@@ -15,8 +15,9 @@ app.use(bodyParser.json());
 app.use('/', index);
 app.use('/todos', todos);
 
-app.use(error.mongoErrorHandler);
-app.use(error.mongooseErrorHandler);
-app.use(error.errorHandler);
+app.use(handler.mongoErrorHandler);
+app.use(handler.mongooseErrorHandler);
+app.use(handler.userErrorHandler);
+app.use(handler.errorHandler);
 
 module.exports = {app, connect};

@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 
+var PrettyError = require('../middleware/PrettyError');
+
 var userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -77,15 +79,21 @@ userSchema.statics.findByToken = function (token) {
 };
 
 userSchema.statics.findByCredentials = function (email, password) {
+  if (!email) {
+    return Promise.reject(new PrettyError('UserError', 'ERR_MISSING', 'Missing email'));
+  } else if (!password) {
+    return Promise.reject(new PrettyError('UserError', 'ERR_MISSING', 'Missing password'));
+  }
+
   return User.findOne({email}).then((user) => {
     if (!user) {
       // Forces a catch in the caller.
-      return Promise.reject();
+      return Promise.reject(new PrettyError('UserError', 'ERR_INCORRECT', 'Incorrect email'));
     }
 
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, res) => {
-        if (res) resolve(user); else reject();
+        if (res) resolve(user); else reject(new PrettyError('UserError', 'ERR_INCORRECT', 'Incorrect password'));
       });
     });
   });

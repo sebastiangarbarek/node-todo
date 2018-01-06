@@ -21,7 +21,7 @@ exports.postJoin = (req, res, next) => {
   });
 };
 
-exports.postLogin = (req, res) => {
+exports.postLogin = (req, res, next) => {
   var body = _.pick(req.body, ['email', 'password']);
 
   User.findByCredentials(body.email, body.password).then((user) => {
@@ -31,7 +31,7 @@ exports.postLogin = (req, res) => {
       // TODO: Send user todos.
     });
   }).catch((err) => {
-    res.status(400).send();
+    next(err);
   });
 };
 
@@ -39,6 +39,6 @@ exports.deleteLogout = (req, res) => {
   req.user.removeAuthToken(req.token).then(() => {
     res.status(200).send();
   }).catch((err) => {
-    res.status(400).send();
+    next(err);
   });
 };

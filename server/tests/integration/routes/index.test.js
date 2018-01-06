@@ -180,6 +180,34 @@ describe('user', () => {
           }).catch((err) => done(err));
         });
     });
+
+    it('should respond with the correct error if the email is missing', (done) => {
+      chai.request(server)
+        .post('/login')
+        .send({
+          password: 'password'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.errorMessage.should.equal('Missing email');
+
+          done();
+        });
+    });
+
+    it('should respond with the correct error if the password is missing', (done) => {
+      chai.request(server)
+        .post('/login')
+        .send({
+          email: seedUsers[1].email
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.errorMessage.should.equal('Missing password');
+
+          done();
+        });
+    });
   });
 
   describe('DELETE /logout', () => {
