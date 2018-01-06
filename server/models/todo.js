@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 var Todo = mongoose.model('Todo', {
   task: {
     type: String,
-    required: true,
+    required: [true, 'A task is required'],
     trim: true
   },
   done: {

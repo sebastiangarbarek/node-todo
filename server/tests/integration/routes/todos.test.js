@@ -52,6 +52,7 @@ describe('todo', () => {
           Todo.find({task}).then((todos) => {
             todos.should.have.lengthOf(1);
             todos[0].task.should.equal(task);
+
             done();
           }).catch((err) => done(err));
         });
@@ -59,7 +60,7 @@ describe('todo', () => {
 
     it('should not add an empty todo to the database', (done) => {
       chai.request(server)
-        .post('/todos/write')
+        .post('/todos')
         .set('x-auth', seedUsers[0].tokens[0].token)
         .send({})
         .end((err, res) => {
@@ -71,13 +72,14 @@ describe('todo', () => {
         });
     });
 
-    it('should respond with an empty todo error', (done) => {
+    it('should respond with the correct error if the task is missing', (done) => {
       chai.request(server)
         .post('/todos')
         .set('x-auth', seedUsers[0].tokens[0].token)
         .send({})
         .end((err, res) => {
           res.should.have.status(400);
+          res.body.errors[0].errorMessage.should.equal('A task is required');
 
           done();
         });
