@@ -34,15 +34,26 @@ exports.postTodo = (req, res, next) => {
     _creator: req.user._id
   });
 
-  todo.save().then((doc) => {
-    res.send(doc);
+  todo.save().then((todo) => {
+    res.send({todo});
   }).catch((err) => {
     next(err);
   });
 };
 
 exports.deleteTodo = (req, res, next) => {
+  var id = req.params.id;
 
+  if (!ObjectID.isValid(id)) {
+    return res.status(404).send();
+  }
+
+  Todo.findByIdAndRemove(id).then((todo) => {
+    if (!todo) return res.status(404).send();
+    res.send({todo});
+  }).catch((err) => {
+    next(err);
+  });
 };
 
 exports.patchTodo = (req, res, next) => {

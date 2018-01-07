@@ -48,7 +48,7 @@ describe('todo', () => {
           if (err) return done(err);
 
           res.should.have.status(200);
-          res.body.task.should.equal(task);
+          res.body.todo.task.should.equal(task);
 
           Todo.find({task}).then((todos) => {
             todos.should.have.lengthOf(1);
