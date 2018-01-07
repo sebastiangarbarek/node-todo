@@ -1,18 +1,18 @@
 const express = require('express');
 
 var authenticate = require('../middleware/authenticate');
-var todoController = require('../controllers/todo-controller');
+var todo = require('../controllers/todos');
 
 var router = express.Router();
 
 router.route('/')
   .all(authenticate)
-  .get(todoController.getTodos)
-  .post(todoController.postTodo);
+  .get(todos.getTodos)
+  .post(todos.postTodo);
 router.route('/:id')
   .all(authenticate)
-  .get(todoController.getTodo)
-  .delete(todoController.deleteTodo)
-  .patch(todoController.patchTodo);
+  .get(todo.getTodo)
+  .delete(todos.deleteTodo)
+  .patch(todos.patchTodo);
 
 module.exports = router;

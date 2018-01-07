@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const ObjectID = require('mongodb').ObjectID;
 
-var Todo = require('../models/todo');
+var Todo = require('../models/Todo');
 
 exports.getTodos = (req, res, next) => {
   Todo.find({

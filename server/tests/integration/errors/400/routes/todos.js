@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-var User = require('../../../../../models/user');
+var User = require('../../../../../models/User');
 var {seedUsers} = require('../../../seeds/user+todo');
 
 var should = chai.should();

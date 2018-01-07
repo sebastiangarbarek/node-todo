@@ -1,6 +1,6 @@
 const _ = require('lodash');
 
-var User = require('../models/user');
+var User = require('../models/User');
 
 exports.getIndex = (req, res) => {
   // TODO: Send user todos.

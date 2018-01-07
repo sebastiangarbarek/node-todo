@@ -1,13 +1,13 @@
 const express = require('express');
 
 var authenticate = require('../middleware/authenticate');
-var indexController = require('../controllers/index-controller');
+var index = require('../controllers/index');
 
 var router = express.Router();
 
-router.get('/', authenticate, indexController.getIndex);
-router.post('/join', indexController.postJoin);
-router.post('/login', indexController.postLogin);
-router.delete('/logout', authenticate, indexController.deleteLogout);
+router.get('/', authenticate, index.getIndex);
+router.post('/join', index.postJoin);
+router.post('/login', index.postLogin);
+router.delete('/logout', authenticate, index.deleteLogout);
 
 module.exports = router;
