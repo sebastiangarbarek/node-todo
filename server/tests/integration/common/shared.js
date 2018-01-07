@@ -23,6 +23,12 @@ exports.unauthorized = (server, route, type) => {
         chai.request(server).post(route).end((err, res) => {
           res.should.have.status(401); res.body.should.deep.equal({}); done();
         });
+        break;
+      }
+      case 'patch': {
+        chai.request(server).patch(route).end((err, res) => {
+          res.should.have.status(401); res.body.should.deep.equal({}); done();
+        });
       }
     }
   });

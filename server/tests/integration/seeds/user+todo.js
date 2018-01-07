@@ -37,12 +37,12 @@ const populateUsers = (done) => {
 const seedTodos = [{
   _id: new ObjectID(),
   task: 'Test GET',
+  completed: true,
+  completedAt: 1,
   _creator: sebastian
 }, {
   _id: new ObjectID(),
   task: 'Test POST',
-  completed: true,
-  completedAt: 1,
   _creator: andrew
 }];
 

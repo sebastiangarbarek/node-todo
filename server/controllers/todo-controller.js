@@ -23,6 +23,8 @@ exports.getTodo = (req, res, next) => {
 
   Todo.findById(id).then((todo) => {
     if (!todo) return res.status(404).send();
+    if (!todo._creator.equals(req.user._id)) return res.status(404).send();
+
     res.send({todo});
   }).catch((err) => {
     next(err);
@@ -51,6 +53,8 @@ exports.deleteTodo = (req, res, next) => {
 
   Todo.findByIdAndRemove(id).then((todo) => {
     if (!todo) return res.status(404).send();
+    if (!todo._creator.equals(req.user._id)) return res.status(404).send();
+
     res.send({todo});
   }).catch((err) => {
     next(err);
@@ -74,6 +78,8 @@ exports.patchTodo = (req, res, next) => {
 
   Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {
     if (!todo) return res.status(404).send();
+    if (!todo._creator.equals(req.user._id)) return res.status(404).send();
+
     res.send({todo});
   }).catch((err) => {
     next(err);

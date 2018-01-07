@@ -126,6 +126,17 @@ describe('todo', () => {
         });
     });
 
+    it('should respond with 404 if the todo does not belong to the user', (done) => {
+      chai.request(server)
+        .get(`/todos/${seedTodos[1]._id.toHexString()}`)
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .end((err, res) => {
+          res.should.have.status(404);
+
+          done();
+        });
+    });
+
     shared.unauthorized(server, `/todos/${seedTodos[0]._id.toHexString()}`, 'get');
   });
 
@@ -168,6 +179,19 @@ describe('todo', () => {
         });
     });
 
+    it('should respond with 404 if the todo does not belong to the user', (done) => {
+      var hexId = seedTodos[1]._id.toHexString();
+
+      chai.request(server)
+        .delete(`/todos/${hexId}`)
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .end((err, res) => {
+          res.should.have.status(404);
+
+          done();
+        });
+    });
+
     shared.unauthorized(server, `/todos/${seedTodos[0]._id.toHexString()}`, 'delete');
   });
 
@@ -189,7 +213,7 @@ describe('todo', () => {
     });
 
     it('should update the done timestamp if not done', (done) => {
-      var hexId = seedTodos[1]._id.toHexString();
+      var hexId = seedTodos[0]._id.toHexString();
 
       chai.request(server)
         .patch(`/todos/${hexId}`)
@@ -219,6 +243,23 @@ describe('todo', () => {
           done();
         });
     });
+
+    it('should respond with 404 if the todo does not belong to the user', (done) => {
+      var hexId = seedTodos[1]._id.toHexString();
+      var task = 'Update this';
+
+      chai.request(server)
+        .patch(`/todos/${hexId}`)
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .send({task})
+        .end((err, res) => {
+          res.should.have.status(404);
+
+          done();
+        });
+    });
+
+    shared.unauthorized(server, `/todos/${seedTodos[0]._id.toHexString()}`, 'patch');
   });
 
   afterEach((done) => {
