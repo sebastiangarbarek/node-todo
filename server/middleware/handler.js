@@ -1,4 +1,4 @@
-var PrettyError = require('./PrettyError');
+var PrettyError = require('../helpers/PrettyError');
 
 exports.mongoErrorHandler = (err, req, res, next) => {
   if (err.name == 'MongoError') {
@@ -45,6 +45,6 @@ exports.userErrorHandler = (err, req, res, next) => {
 
 exports.errorHandler = (err, req, res, next) => {
   console.log(err);
-  
+
   res.status(500).send(err);
 }

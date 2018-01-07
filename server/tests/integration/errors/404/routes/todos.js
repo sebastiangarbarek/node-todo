@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const ObjectID = require('mongodb').ObjectID;
 
-var {seedUsers, seedTodos} = require('../../../seeds/user+todo');
+var {seedUsers, seedTodos} = require('../../../seeds/basic');
 
 var should = chai.should();
 chai.use(chaiHttp);

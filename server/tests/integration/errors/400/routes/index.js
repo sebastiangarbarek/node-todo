@@ -1,7 +1,7 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-var {seedUsers} = require('../../../seeds/user+todo');
+var {seedUsers} = require('../../../seeds/basic');
 
 var should = chai.should();
 chai.use(chaiHttp);

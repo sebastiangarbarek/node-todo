@@ -1,7 +1,7 @@
 const http = require('http');
 
 var {app, connect} = require('../../../app');
-var {populate} = require('../seeds/user+todo');
+var {populate} = require('../seeds/basic');
 var error400 = require('./400/400');
 var error401 = require('./401');
 var error404 = require('./404/404');

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
 
-var PrettyError = require('../middleware/PrettyError');
+var PrettyError = require('../helpers/PrettyError');
 
 var userSchema = new mongoose.Schema({
   email: {

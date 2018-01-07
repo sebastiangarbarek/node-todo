@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http');
 
 var {app, connect} = require('../../../app');
 var Todo = require('../../../models/Todo');
-var {seedUsers, seedTodos, populate} = require('../seeds/user+todo');
+var {seedUsers, seedTodos, populate} = require('../seeds/basic');
 
 var should = chai.should();
 chai.use(chaiHttp);
