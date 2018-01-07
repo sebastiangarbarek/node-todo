@@ -129,6 +129,48 @@ describe('todo', () => {
     shared.unauthorized(server, `/todos/${seedTodos[0]._id.toHexString()}`, 'get');
   });
 
+  describe('DELETE /todos/:id', () => {
+    it('should delete the todo of the id', (done) => {
+      var hexId = seedTodos[0]._id.toHexString();
+
+      chai.request(server)
+        .delete(`/todos/${hexId}`)
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.todo._id.should.equal(hexId);
+
+          done();
+        });
+    });
+
+    it('should respond with 404 if the todo is not found', (done) => {
+      var hexId = new ObjectID().toHexString();
+
+      chai.request(server)
+        .delete(`/todos/${hexId}`)
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .end((err, res) => {
+          res.should.have.status(404);
+
+          done();
+        });
+    });
+
+    it('should respond with 404 to an invalid id', (done) => {
+      chai.request(server)
+        .delete('/todos/1')
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .end((err, res) => {
+          res.should.have.status(404);
+
+          done();
+        });
+    });
+
+    shared.unauthorized(server, `/todos/${seedTodos[0]._id.toHexString()}`, 'delete');
+  });
+
   afterEach((done) => {
     Todo.remove({}).then(() => done());
   });
