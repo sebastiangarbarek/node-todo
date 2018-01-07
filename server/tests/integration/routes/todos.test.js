@@ -171,6 +171,56 @@ describe('todo', () => {
     shared.unauthorized(server, `/todos/${seedTodos[0]._id.toHexString()}`, 'delete');
   });
 
+  describe('PATCH /todos/:id', () => {
+    it('should update the todo task of the id', (done) => {
+      var hexId = seedTodos[0]._id.toHexString();
+      var task = 'Update this';
+
+      chai.request(server)
+        .patch(`/todos/${hexId}`)
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .send({task})
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.todo.task.should.equal(task);
+
+          done();
+        });
+    });
+
+    it('should update the done timestamp if not done', (done) => {
+      var hexId = seedTodos[1]._id.toHexString();
+
+      chai.request(server)
+        .patch(`/todos/${hexId}`)
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .send({done: false})
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.todo.done.should.equal(false);
+          should.not.exist(res.body.todo.doneAt);
+
+          done();
+        });
+    });
+
+    it('should update the done timestamp if done', (done) => {
+      var hexId = seedTodos[0]._id.toHexString();
+
+      chai.request(server)
+        .patch(`/todos/${hexId}`)
+        .set('x-auth', seedUsers[0].tokens[0].token)
+        .send({done: true})
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.todo.done.should.equal(true);
+          res.body.todo.doneAt.should.be.a('number');
+
+          done();
+        });
+    });
+  });
+
   afterEach((done) => {
     Todo.remove({}).then(() => done());
   });

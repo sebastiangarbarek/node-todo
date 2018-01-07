@@ -59,17 +59,17 @@ exports.deleteTodo = (req, res, next) => {
 
 exports.patchTodo = (req, res, next) => {
   var id = req.params.id;
-  var body = _.pick(req.body, ['task', 'completed']);
+  var body = _.pick(req.body, ['task', 'done']);
 
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
   }
 
-  if (_.isBoolean(body.completed) && body.completed) {
-    body.completedAt = new Date().getTime();
+  if (_.isBoolean(body.done) && body.done) {
+    body.doneAt = new Date().getTime();
   } else {
-    body.completed = false;
-    body.completedAt = null;
+    body.done = false;
+    body.doneAt = null;
   }
 
   Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {

@@ -41,6 +41,8 @@ const seedTodos = [{
 }, {
   _id: new ObjectID(),
   task: 'Test POST',
+  completed: true,
+  completedAt: 1,
   _creator: andrew
 }];
 
