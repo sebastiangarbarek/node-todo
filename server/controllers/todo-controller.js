@@ -1,4 +1,4 @@
-const {ObjectID} = require('mongodb');
+const ObjectID = require('mongodb').ObjectID;
 
 var Todo = require('../models/todo');
 
