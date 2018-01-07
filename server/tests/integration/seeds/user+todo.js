@@ -21,6 +21,18 @@ const seedUsers = [{
   password: 'password',
 }];
 
+const seedTodos = [{
+  _id: new ObjectID(),
+  task: 'Test GET',
+  completed: true,
+  completedAt: 1,
+  _creator: sebastian
+}, {
+  _id: new ObjectID(),
+  task: 'Test POST',
+  _creator: andrew
+}];
+
 const populateUsers = (done) => {
   User.remove({}).then(() => {
     toPromise = [];
@@ -33,18 +45,6 @@ const populateUsers = (done) => {
     return Promise.all(toPromise);
   }).then(() => done());
 };
-
-const seedTodos = [{
-  _id: new ObjectID(),
-  task: 'Test GET',
-  completed: true,
-  completedAt: 1,
-  _creator: sebastian
-}, {
-  _id: new ObjectID(),
-  task: 'Test POST',
-  _creator: andrew
-}];
 
 const populateTodos = (done) => {
   Todo.remove({}).then(() => {
