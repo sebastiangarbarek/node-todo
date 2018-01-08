@@ -32,6 +32,12 @@ var userSchema = new mongoose.Schema({
       type: String,
       required: true
     }
+  }],
+  teams: [{
+    _team: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    }
   }]
 }, {
   usePushEach: true
