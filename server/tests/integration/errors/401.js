@@ -1,16 +1,16 @@
-var shared = require('../common/shared');
+var unauthorized = require('../helpers/unauthorized');
 
 exports.test = (server) => {
   describe('/', () => {
-    shared.unauthorized(server, '/', 'get');
-    shared.unauthorized(server, '/logout', 'delete');
+    unauthorized.test(server, '/', 'get');
+    unauthorized.test(server, '/logout', 'delete');
   });
 
   describe('/todos', () => {
-    shared.unauthorized(server, '/todos', 'get');
-    shared.unauthorized(server, '/todos', 'post');
-    shared.unauthorized(server, `/todos/123456`, 'get');
-    shared.unauthorized(server, `/todos/123456`, 'delete');
-    shared.unauthorized(server, `/todos/123456`, 'patch');
+    unauthorized.test(server, '/todos', 'get');
+    unauthorized.test(server, '/todos', 'post');
+    unauthorized.test(server, `/todos/123456`, 'get');
+    unauthorized.test(server, `/todos/123456`, 'delete');
+    unauthorized.test(server, `/todos/123456`, 'patch');
   });
 };

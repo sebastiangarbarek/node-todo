@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http');
 var should = chai.should();
 chai.use(chaiHttp);
 
-exports.unauthorized = (server, route, type) => {
+exports.test = (server, route, type) => {
   it(`should respond with a 401 if not logged in for ${type.toUpperCase()} ${route}`, (done) => {
     switch (type) {
       case 'get': {

@@ -9,6 +9,7 @@ router.route('/')
   .all(authenticate)
   .get(todos.getTodos)
   .post(todos.postTodo);
+
 router.route('/:id')
   .all(authenticate)
   .get(todos.getTodo)
