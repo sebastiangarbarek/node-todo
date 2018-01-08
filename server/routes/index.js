@@ -5,11 +5,14 @@ var index = require('../controllers/index');
 
 var router = express.Router();
 
-router.get('/', authenticate, index.getIndex);
 router.post('/join', index.postJoin);
 router.post('/login', index.postLogin);
-router.delete('/logout', authenticate, index.deleteLogout);
-router.get('/invites', authenticate, index.getInvites);
-router.delete('/invites/:invite', authenticate, index.deleteInvite);
+
+router.all('*', authenticate.user);
+
+router.get('/', index.getIndex);
+router.delete('/logout', index.deleteLogout);
+router.get('/invites', index.getInvites);
+router.delete('/invites/:invite', index.deleteInvite);
 
 module.exports = router;

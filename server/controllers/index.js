@@ -2,7 +2,7 @@ const _ = require('lodash');
 
 var User = require('../models/User');
 
-exports.getIndex = (req, res) => {
+exports.getIndex = (req, res, next) => {
   // TODO: Send user todos.
 
   res.send(req.user);
@@ -35,10 +35,18 @@ exports.postLogin = (req, res, next) => {
   });
 };
 
-exports.deleteLogout = (req, res) => {
+exports.deleteLogout = (req, res, next) => {
   req.user.removeAuthToken(req.token).then(() => {
     res.status(200).send();
   }).catch((err) => {
     next(err);
   });
 };
+
+exports.getInvites = (req, res, next) => {
+
+}
+
+exports.deleteInvite = (req, res, next) => {
+
+}
