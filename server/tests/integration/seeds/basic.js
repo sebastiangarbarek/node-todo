@@ -9,6 +9,7 @@ const andrew = new ObjectID();
 
 const seedUsers = [{
   _id: sebastian,
+  username: 'seba',
   email: 'sebastian@test.com',
   password: 'password',
   tokens: [{
@@ -17,6 +18,7 @@ const seedUsers = [{
   }]
 }, {
   _id: andrew,
+  username: 'andy',
   email: 'andrew@test.com',
   password: 'password',
 }];

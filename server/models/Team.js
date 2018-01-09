@@ -5,6 +5,10 @@ var teamSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true
   }
+  name: {
+    type: String,
+    required: [true, 'A team name is required']
+  }
   members: [{
     _member: {
       type: mongoose.Schema.Types.ObjectId,

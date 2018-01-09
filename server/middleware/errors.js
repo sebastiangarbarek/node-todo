@@ -5,7 +5,15 @@ exports.mongoErrorHandler = (err, req, res, next) => {
     switch (err.code) {
       case 11000: {
         res.setHeader('Content-Type', 'application/json');
-        res.status(400).send(new PrettyError(err.name, 'ERR_EXISTS', 'Duplicate key'));
+
+        if (err.errmsg.includes('email')) {
+          res.status(400).send(new PrettyError(err.name, 'ERR_EXISTS', 'Email already registered'));
+        } else if (err.errmsg.includes('username')) {
+          res.status(400).send(new PrettyError(err.name, 'ERR_EXISTS', 'Username taken'));
+        } else {
+          res.status(400).send(new PrettyError(err.name, 'ERR_EXISTS', 'Duplicate key'));
+        }
+
         break;
       }
       default: {

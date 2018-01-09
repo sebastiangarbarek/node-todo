@@ -32,6 +32,7 @@ describe('user', () => {
   describe('POST /join', () => {
     it('should add a new user and their password should be hashed', (done) => {
       var req = {
+        username: 'test',
         email: 'test@test.com',
         password: 'password'
       };

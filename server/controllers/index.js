@@ -9,7 +9,7 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.postJoin = (req, res, next) => {
-  var body = _.pick(req.body, ['email', 'password']);
+  var body = _.pick(req.body, ['username', 'email', 'password']);
   var user = new User(body);
 
   user.save().then(() => {

@@ -12,6 +12,7 @@ exports.test = (server) => {
       chai.request(server)
         .post('/join')
         .send({
+          username: 'test',
           email: 'invalid',
           password: 'password'
         })
@@ -37,6 +38,21 @@ exports.test = (server) => {
         });
     });
 
+    it('should respond with the correct error if the username is missing', (done) => {
+      chai.request(server)
+        .post('/join')
+        .send({
+          email: 'test@test.com',
+          password: 'password'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.errors[0].errorMessage.should.equal('A username is required');
+
+          done();
+        });
+    });
+
     it('should respond with the correct error if the password is missing', (done) => {
       chai.request(server)
         .post('/join')
@@ -51,13 +67,13 @@ exports.test = (server) => {
         });
     });
 
-    it('should respond with two error messages if two fields are missing', (done) => {
+    it('should respond with three error messages if three fields are missing', (done) => {
       chai.request(server)
         .post('/join')
         .send({})
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.errors.should.have.lengthOf(2);
+          res.body.errors.should.have.lengthOf(3);
 
           done();
         });
@@ -67,12 +83,29 @@ exports.test = (server) => {
       chai.request(server)
         .post('/join')
         .send({
+          username: 'test',
           email: seedUsers[0].email,
           password: 'password'
         })
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.errorMessage.should.equal('Duplicate key');
+          res.body.errorMessage.should.equal('Email already registered');
+
+          done();
+        });
+    });
+
+    it('should not add a user if the username has been taken', (done) => {
+      chai.request(server)
+        .post('/join')
+        .send({
+          username: seedUsers[0].username,
+          email: 'test@test.com',
+          password: 'password'
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.errorMessage.should.equal('Username taken');
 
           done();
         });

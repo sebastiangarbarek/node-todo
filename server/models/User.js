@@ -7,6 +7,12 @@ const bcrypt = require('bcryptjs');
 var PrettyError = require('../helpers/PrettyError');
 
 var userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: [true, 'A username is required'],
+    unique: true,
+    trim: true
+  },
   email: {
     type: String,
     required: [true, 'An email is required'],
@@ -35,6 +41,16 @@ var userSchema = new mongoose.Schema({
   }],
   teams: [{
     _team: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    }
+  }],
+  invites: [{
+    _team: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    },
+    _inviter: {
       type: mongoose.Schema.Types.ObjectId,
       required: true
     }
